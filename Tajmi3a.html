@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تجميعة - مساعد الذكاء الاصطناعي لبناء الكمبيوتر | Tajmi3a</title>
+    <meta name="description" content="مساعد ذكي يساعدك في اختيار أفضل تجميعة كمبيوتر حسب ميزانيتك واستخدامك. مدعوم بالذكاء الاصطناعي للمتاجر السعودية على منصة سلة.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary-purple: #667eea;
+            --secondary-purple: #764ba2;
+            --dark-purple: #2d1b69;
+            --light-purple: #a78bfa;
+            --accent-pink: #ec4899;
+            --bg-dark: #0f0a1e;
+            --bg-card: rgba(103, 126, 234, 0.1);
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--dark-purple) 100%);
+            color: white;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(103, 126, 234, 0.15) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: scroll 20s linear infinite;
+        }
+        
+        @keyframes scroll {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+        
+        /* Header */
+        header {
+            background: rgba(15, 10, 30, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 2px solid var(--primary-purple);
+        }
+        
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo img {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(103, 126, 234, 0.5);
+        }
+        
+        .logo h1 {
+            font-size: 1.8em;
+            background: linear-gradient(135deg, var(--primary-purple), var(--accent-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--light-purple);
+        }
+        
+        /* Hero Section */
+        .hero {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 20px;
+            text-align: center;
+        }
+        
+        .hero-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+        
+        .hero-icon {
+            width: 300px;
+            height: 300px;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .hero h2 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--primary-purple), var(--accent-pink), var(--light-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient 3s ease infinite;
+            background-size: 200% 200%;
+        }
+        
+        @keyframes gradient {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .hero p {
+            font-size: 1.3em;
+            color: #c7d2fe;
+            max-width: 700px;
+            margin: 0 auto 40px;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .btn {
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
+            color: white;
+            box-shadow: 0 10px 30px rgba(103, 126, 234, 0.4);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(103, 126, 234, 0.6);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid var(--primary-purple);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--primary-purple);
+            transform: translateY(-3px);
+        }
+        
+        /* Features Section */
+        .features {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 0 20px;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 60px;
+            background: linear-gradient(135deg, var(--primary-purple), var(--light-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            border: 2px solid rgba(103, 126, 234, 0.3);
+            transition: all 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary-purple);
+            box-shadow: 0 20px 40px rgba(103, 126, 234, 0.3);
+        }
+        
+        .feature-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            color: var(--light-purple);
+        }
+        
+        .feature-card p {
+            color: #c7d2fe;
+            line-height: 1.8;
+        }
+        
+        /* How It Works */
+        .how-it-works {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 0 20px;
+        }
+        
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .step {
+            text-align: center;
+            position: relative;
+        }
+        
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-purple), var(--accent-pink));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin: 0 auto 20px;
+            box-shadow: 0 10px 30px rgba(103, 126, 234, 0.4);
+        }
+        
+        .step h3 {
+            font-size: 1.3em;
+            margin-bottom: 10px;
+            color: var(--light-purple);
+        }
+        
+        .step p {
+            color: #c7d2fe;
+        }
+        
+        /* Pricing Section */
+        .pricing {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 0 20px;
+        }
+        
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .pricing-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            border: 2px solid rgba(103, 126, 234, 0.3);
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .pricing-card.featured {
+            border-color: var(--accent-pink);
+            transform: scale(1.05);
+        }
+        
+        .pricing-card.featured::before {
+            content: '⭐ الأكثر شعبية';
+            position: absolute;
+            top: -15px;
+            right: 20px;
+            background: linear-gradient(135deg, var(--accent-pink), var(--primary-purple));
+            padding: 5px 20px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(103, 126, 234, 0.4);
+        }
+        
+        .plan-name {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: var(--light-purple);
+        }
+        
+        .plan-price {
+            font-size: 3em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .plan-price span {
+            font-size: 0.5em;
+            color: #c7d2fe;
+        }
+        
+        .plan-features {
+            list-style: none;
+            margin: 30px 0;
+        }
+        
+        .plan-features li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(103, 126, 234, 0.2);
+            color: #c7d2fe;
+        }
+        
+        .plan-features li:last-child {
+            border-bottom: none;
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 80px 20px;
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(255, 255, 255, 0.05) 10px,
+                rgba(255, 255, 255, 0.05) 20px
+            );
+            animation: slide 20s linear infinite;
+        }
+        
+        @keyframes slide {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+        
+        .cta-section h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .cta-section p {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Footer */
+        footer {
+            background: rgba(15, 10, 30, 0.9);
+            padding: 40px 20px 20px;
+            margin-top: 80px;
+            border-top: 2px solid var(--primary-purple);
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-section h3 {
+            color: var(--light-purple);
+            margin-bottom: 20px;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-section a {
+            color: #c7d2fe;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section a:hover {
+            color: var(--light-purple);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(103, 126, 234, 0.3);
+            color: #c7d2fe;
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .hero h2 {
+                font-size: 2em;
+            }
+            
+            .hero p {
+                font-size: 1.1em;
+            }
+            
+            .hero-icon {
+                width: 200px;
+                height: 200px;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+            }
+            
+            .section-title {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="tajmi3a-icon.png" alt="Tajmi3a Logo">
+                <h1>تجميعة</h1>
+            </div>
+        </nav>
+    </header>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <img src="tajmi3a-icon.png" alt="Tajmi3a AI Assistant" class="hero-icon">
+            <h2>مساعدك الذكي لبناء الكمبيوتر المثالي</h2>
+            <p>
+                اكتشف أفضل تجميعة كمبيوتر تناسب ميزانيتك واحتياجاتك مع مساعد الذكاء الاصطناعي المتطور. 
+                مصمم خصيصاً للمتاجر السعودية على منصة سلة.
+            </p>
+        </div>
+    </section>
+    
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <h2 class="section-title">✨ لماذا تجميعة؟</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🤖</div>
+                <h3>ذكاء اصطناعي متطور</h3>
+                <p>يفهم اللهجة السعودية والخليجية، ويقدم توصيات دقيقة بناءً على احتياجاتك الفعلية.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">💰</div>
+                <h3>توافق مع الميزانية</h3>
+                <p>يقترح أفضل التجميعات ضمن ميزانيتك، مع ضمان أفضل قيمة مقابل السعر.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🔍</div>
+                <h3>فحص التوافق</h3>
+                <p>يتحقق تلقائياً من توافق جميع القطع، لضمان عمل تجميعتك بكفاءة عالية.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🛒</div>
+                <h3>إضافة فورية للسلة</h3>
+                <p>اختر تجميعتك وأضفها للسلة بنقرة واحدة، دون الحاجة للبحث عن كل قطعة.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>سرعة فائقة</h3>
+                <p>استجابة فورية وذكية، توفر وقتك وتجعل تجربة التسوق أسهل وأسرع.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>تقارير تفصيلية</h3>
+                <p>احصل على تحليلات شاملة لاهتمامات عملائك وأكثر المنتجات طلباً.</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- How It Works -->
+    <section class="how-it-works" id="how-it-works">
+        <h2 class="section-title">🎯 كيف يعمل تجميعة؟</h2>
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>حدد ميزانيتك</h3>
+                <p>أخبر تجميعة بالميزانية المتاحة لديك</p>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>اختر الاستخدام</h3>
+                <p>ألعاب، عمل، أو تصميم - حسب احتياجك</p>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>احصل على التوصية</h3>
+                <p>تجميعة كاملة متوافقة ومناسبة لك</p>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">4</div>
+                <h3>أضف للسلة</h3>
+                <p>بنقرة واحدة، جميع القطع في سلتك</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Pricing Section -->
+    <section class="pricing" id="pricing">
+        <h2 class="section-title">💎 الباقات والأسعار</h2>
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <h3 class="plan-name">الأساسية</h3>
+                <div class="plan-price">100 <span>ريال/شهر</span></div>
+                <ul class="plan-features">
+                    <li>✅ 300 محادثة شهرياً</li>
+                    <li>✅ مساعد ذكي متطور</li>
+                    <li>✅ توصيات تجميعات كاملة</li>
+                    <li>✅ فحص التوافق التلقائي</li>
+                    <li>✅ إضافة مباشرة للسلة</li>
+                    <li>✅ دعم فني عبر البريد</li>
+                </ul>
+            </div>
+            
+            <div class="pricing-card featured">
+                <h3 class="plan-name">الاحترافية</h3>
+                <div class="plan-price">200 <span>ريال/شهر</span></div>
+                <ul class="plan-features">
+                    <li>✅ 600 محادثة شهرياً</li>
+                    <li>✅ كل مميزات الباقة الأساسية</li>
+                    <li>✅ تقارير شهرية مفصلة</li>
+                    <li>✅ دعم عبر واتساب</li>
+                    <li>✅ أولوية في الدعم</li>
+                    <li>✅ تخصيص الرسائل الترحيبية</li>
+                    <li>✅ شارات AI للمتجر</li>
+                </ul>
+            </div>
+            
+            <div class="pricing-card">
+                <h3 class="plan-name">للشركات</h3>
+                <div class="plan-price">300 <span>ريال/شهر</span></div>
+                <ul class="plan-features">
+                    <li>✅ 900 محادثة شهرياً</li>
+                    <li>✅ كل مميزات الباقة الاحترافية</li>
+                    <li>✅ تقارير أسبوعية</li>
+                    <li>✅ دعم فني مخصص</li>
+                    <li>✅ تكامل مع CRM</li>
+                    <li>✅ شعارك في واجهة المساعد</li>
+                    <li>✅ وصول API</li>
+                    <li>✅ استشارة شهرية مجانية</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>تجميعة</h3>
+                <p style="color: #c7d2fe;">مساعد الذكاء الاصطناعي الأول لبناء أجهزة الكمبيوتر في السعودية</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>تواصل معنا</h3>
+                <ul>
+                    <li>📧 customer.service@kemetops.cloud</li>
+                    <li>📱 966593426181</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>© 2025 تجميعة - مقدم من KemetOps. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+</body>
+</html>
