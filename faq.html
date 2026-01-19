@@ -2,156 +2,618 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>الأسئلة الشائعة - Tajmi3a FAQ</title>
+    <meta name="description" content="إجابات على جميع أسئلتك حول تجميعة - مساعد الذكاء الاصطناعي لبناء الكمبيوتر">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary-purple: #667eea;
+            --secondary-purple: #764ba2;
+            --dark-purple: #2d1b69;
+            --light-purple: #a78bfa;
+            --accent-pink: #ec4899;
+            --bg-dark: #0f0a1e;
+            --bg-card: rgba(103, 126, 234, 0.1);
+        }
+        
         body {
-            font-family: Arial, sans-serif;
-            max-width: 900px;
-            margin: 50px auto;
-            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--dark-purple) 100%);
+            color: white;
             line-height: 1.8;
+            overflow-x: hidden;
+            min-height: 100vh;
         }
-        h1 { color: #0066FF; text-align: center; }
+        
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(103, 126, 234, 0.15) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: scroll 20s linear infinite;
+        }
+        
+        @keyframes scroll {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+        
+        /* Header */
+        header {
+            background: rgba(15, 10, 30, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 2px solid var(--primary-purple);
+        }
+        
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo img {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(103, 126, 234, 0.5);
+        }
+        
+        .logo h1 {
+            font-size: 1.8em;
+            background: linear-gradient(135deg, var(--primary-purple), var(--accent-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .back-link {
+            color: var(--light-purple);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .back-link:hover {
+            color: white;
+        }
+        
+        /* Main Content */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .page-header h2 {
+            font-size: 3em;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, var(--primary-purple), var(--accent-pink), var(--light-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient 3s ease infinite;
+            background-size: 200% 200%;
+        }
+        
+        @keyframes gradient {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .page-header p {
+            font-size: 1.2em;
+            color: #c7d2fe;
+        }
+        
+        /* Language Toggle */
+        .language-toggle {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .lang-btn {
+            padding: 10px 30px;
+            border-radius: 25px;
+            border: 2px solid var(--primary-purple);
+            background: transparent;
+            color: white;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .lang-btn.active {
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
+            box-shadow: 0 5px 15px rgba(103, 126, 234, 0.4);
+        }
+        
+        .lang-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        /* FAQ Sections */
+        .faq-section {
+            margin-bottom: 40px;
+        }
+        
+        .section-divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary-purple), transparent);
+            margin: 80px 0 60px;
+        }
+        
+        /* FAQ Items */
         .faq-item {
-            background: #f5f5f5;
-            padding: 20px;
+            background: var(--bg-card);
+            backdrop-filter: blur(10px);
+            padding: 30px;
             margin: 20px 0;
-            border-radius: 10px;
-            border-right: 4px solid #0066FF;
+            border-radius: 15px;
+            border-right: 4px solid var(--primary-purple);
+            transition: all 0.3s;
+            position: relative;
         }
+        
+        .faq-item:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 10px 30px rgba(103, 126, 234, 0.3);
+            border-right-color: var(--accent-pink);
+        }
+        
         .question {
             font-weight: bold;
-            color: #0066FF;
-            font-size: 18px;
-            margin-bottom: 10px;
+            color: var(--light-purple);
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
         }
-        .answer { color: #333; }
+        
+        .question-icon {
+            flex-shrink: 0;
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, var(--primary-purple), var(--accent-pink));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+        }
+        
+        .answer {
+            color: #c7d2fe;
+            line-height: 1.8;
+            font-size: 1.05em;
+        }
+        
+        .answer br {
+            margin-bottom: 8px;
+        }
+        
+        /* Contact Section */
+        .contact-box {
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            margin-top: 60px;
+            box-shadow: 0 10px 40px rgba(103, 126, 234, 0.4);
+        }
+        
+        .contact-box h3 {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+        }
+        
+        .contact-box p {
+            font-size: 1.1em;
+            margin-bottom: 20px;
+        }
+        
+        .contact-box a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 12px 30px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            display: inline-block;
+            transition: all 0.3s;
+        }
+        
+        .contact-box a:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        /* Footer */
+        footer {
+            background: rgba(15, 10, 30, 0.9);
+            padding: 30px 20px;
+            margin-top: 80px;
+            border-top: 2px solid var(--primary-purple);
+            text-align: center;
+        }
+        
+        footer p {
+            color: #c7d2fe;
+            margin: 5px 0;
+        }
+        
+        footer a {
+            color: var(--light-purple);
+            text-decoration: none;
+        }
+        
+        footer a:hover {
+            color: white;
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .page-header h2 {
+                font-size: 2em;
+            }
+            
+            .logo h1 {
+                font-size: 1.3em;
+            }
+            
+            .logo img {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .faq-item {
+                padding: 20px;
+            }
+            
+            .question {
+                font-size: 1.1em;
+            }
+            
+            .contact-box {
+                padding: 30px 20px;
+            }
+        }
     </style>
 </head>
 <body>
-    <h1>الأسئلة الشائعة - FAQ</h1>
-    <h2 style="text-align: center; color: #00CCFF;">تجميعة Tajmi3a</h2>
+    <div class="bg-animation"></div>
+    
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="tajmi3a-icon.png" alt="Tajmi3a Logo">
+                <h1>تجميعة</h1>
+            </div>
+        </nav>
+    </header>
+    
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h2>❓ الأسئلة الشائعة</h2>
+            <p>إجابات على جميع أسئلتك حول تجميعة</p>
+        </div>
+        
+        <!-- Language Toggle -->
+        <div class="language-toggle">
+            <button class="lang-btn active" onclick="showSection('arabic')">العربية</button>
+            <button class="lang-btn" onclick="showSection('english')">English</button>
+        </div>
+        
+        <!-- Arabic FAQ Section -->
+        <div id="arabic-section" class="faq-section">
+            <div class="faq-item">
+                <div class="question">
+                    <div class="question-icon">1</div>
+                    <span>ما هو تطبيق تجميعة؟</span>
+                </div>
+                <div class="answer">تجميعة هو روبوت محادثة ذكي مدعوم بالذكاء الاصطناعي، مصمم خصيصاً لمتاجر قطع الكمبيوتر على منصة سلة. يساعد العملاء في اختيار القطع المناسبة ويُنشئ روابط سلة تسوق مباشرة.</div>
+            </div>
 
-    <div class="faq-item">
-        <div class="question">س1: ما هو تطبيق تجميعة؟</div>
-        <div class="answer">تجميعة هو روبوت محادثة ذكي مدعوم بالذكاء الاصطناعي، مصمم خصيصاً لمتاجر قطع الكمبيوتر على منصة سلة. يساعد العملاء في اختيار القطع المناسبة ويُنشئ روابط سلة تسوق مباشرة.</div>
-    </div>
+            <div class="faq-item">
+                <div class="question">
+                    <div class="question-icon">2</div>
+                    <span>كم يستغرق التنصيب؟</span>
+                </div>
+                <div class="answer">15 دقيقة فقط! تنصيب بضغطة واحدة من متجر تطبيقات سلة. لا تحتاج خبرة تقنية.</div>
+            </div>
 
-    <div class="faq-item">
-        <div class="question">س2: كم يستغرق التنصيب؟</div>
-        <div class="answer">15 دقيقة فقط! تنصيب بضغطة واحدة من متجر تطبيقات سلة. لا تحتاج خبرة تقنية.</div>
-    </div>
+            <div class="faq-item">
+                <div class="question">
+                    <div class="question-icon">3</div>
+                    <span>هل يدعم اللغة العربية؟</span>
+                </div>
+                <div class="answer">نعم بالكامل! الروبوت يتحدث باللهجة السعودية بشكل طبيعي ويفهم المصطلحات التقنية بالعربي.</div>
+            </div>
 
-    <div class="faq-item">
-        <div class="question">س3: هل يدعم اللغة العربية؟</div>
-        <div class="answer">نعم بالكامل! الروبوت يتحدث باللهجة السعودية بشكل طبيعي ويفهم المصطلحات التقنية بالعربي.</div>
-    </div>
+            <div class="faq-item">
+                <div class="question">
+                    <div class="question-icon">4</div>
+                    <span>كم عدد المحادثات المشمولة في كل باقة؟</span>
+                </div>
+                <div class="answer">
+                    • الباقة الأساسية: 300 محادثة شهرياً<br>
+                    • الباقة الاحترافية: 600 محادثة شهرياً<br>
+                    • باقة الشركات: 900 محادثة شهرياً
+                </div>
+            </div>
 
-    <div class="faq-item">
-        <div class="question">س4: كم عدد المحادثات المشمولة في كل باقة؟</div>
-        <div class="answer">
-            • باقة المبتدئ: 1,000 محادثة شهرياً<br>
-            • باقة المحترف: 5,000 محادثة شهرياً<br>
-            • باقة المؤسسات: غير محدود
+            <div class="faq-item">
+                <div class="question">
+                    <div class="question-icon">5</div>
+                    <span>كيف يتم تحديث المنتجات؟</span>
+                </div>
+                <div class="answer">تلقائياً من متجر سلة! عند تحديث سعر أو مخزون، يتحدث الروبوت خلال ثوانٍ عبر webhooks فورية.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="question">
+                    <div class="question-icon">6</div>
+                    <span>هل يمكنني إلغاء الاشتراك؟</span>
+                </div>
+                <div class="answer">نعم، في أي وقت بدون التزامات طويلة الأجل. لا توجد رسوم إلغاء.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="question">
+                    <div class="question-icon">7</div>
+                    <span>ماذا يحدث لبيانات العملاء؟</span>
+                </div>
+                <div class="answer">المحادثات تُحذف تلقائياً بعد انتهاء الجلسة. لا نخزن معلومات شخصية أو معلومات دفع. امتثال كامل لقانون حماية البيانات السعودي.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="question">
+                    <div class="question-icon">8</div>
+                    <span>هل التطبيق آمن؟</span>
+                </div>
+                <div class="answer">نعم! نستخدم OAuth 2.0 للتوثيق، HTTPS للتشفير، ومراجعات أمنية منتظمة. معتمد من سلة.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="question">
+                    <div class="question-icon">9</div>
+                    <span>كيف أحصل على دعم فني؟</span>
+                </div>
+                <div class="answer">
+                    • البريد الإلكتروني: customer.service@kemetops.cloud<br>
+                    • الهاتف: +966 59 342 6181<br>
+                    • أوقات العمل: من الأحد للخميس، 9 صباحاً - 6 مساءً
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="question">
+                    <div class="question-icon">10</div>
+                    <span>ما الفرق بينكم وبين الشات بوتات الأخرى؟</span>
+                </div>
+                <div class="answer">
+                    • مصمم خصيصاً لقطع الكمبيوتر (يفهم التوافق، التقنيات، الاستخدامات)<br>
+                    • يتحدث اللهجة السعودية بشكل طبيعي<br>
+                    • تكامل مباشر مع سلة (توليد روابط سلة مباشرة)<br>
+                    • أحدث تقنية AI (Claude Sonnet 4.5)
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="question">
+                    <div class="question-icon">11</div>
+                    <span>هل يمكن تخصيص الرسائل؟</span>
+                </div>
+                <div class="answer">نعم! يمكنك تخصيص رسالة الترحيب، أسلوب الرد، والرسائل التلقائية من لوحة التحكم.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="question">
+                    <div class="question-icon">12</div>
+                    <span>هل توجد رسوم إعداد؟</span>
+                </div>
+                <div class="answer">لا! لا توجد رسوم إعداد أو رسوم خفية. فقط الاشتراك الشهري.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="question">
+                    <div class="question-icon">13</div>
+                    <span>كيف يتعامل التطبيق مع المنتجات غير المتوفرة؟</span>
+                </div>
+                <div class="answer">يقترح تلقائياً بدائل متوفرة بمواصفات مشابهة، ويخبر العميل بموعد التوفر المتوقع إن أمكن.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="question">
+                    <div class="question-icon">14</div>
+                    <span>هل يدعم التطبيق الخصومات والعروض؟</span>
+                </div>
+                <div class="answer">نعم! يعرض الأسعار بعد الخصم تلقائياً ويخبر العميل بالعروض المتاحة على المنتجات.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="question">
+                    <div class="question-icon">15</div>
+                    <span>ماذا يحدث عند تجاوز عدد المحادثات الشهرية؟</span>
+                </div>
+                <div class="answer">يتم احتساب 0.60 ريال لكل محادثة إضافية. يمكنك أيضاً الترقية لباقة أعلى في أي وقت.</div>
+            </div>
+        </div>
+        
+        <!-- English FAQ Section -->
+        <div id="english-section" class="faq-section" style="display: none;">
+            <div class="section-divider"></div>
+            
+            <div class="faq-item">
+                <div class="question">
+                    <div class="question-icon">1</div>
+                    <span>What is Tajmi3a?</span>
+                </div>
+                <div class="answer">Tajmi3a is an AI-powered chatbot designed specifically for PC parts stores on Salla platform. It helps customers choose the right components and generates direct cart links.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="question">
+                    <div class="question-icon">2</div>
+                    <span>How long does installation take?</span>
+                </div>
+                <div class="answer">Only 15 minutes! One-click install from Salla App Store. No technical expertise required.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="question">
+                    <div class="question-icon">3</div>
+                    <span>Does it support Arabic?</span>
+                </div>
+                <div class="answer">Yes, fully! The bot speaks natural Saudi dialect and understands technical terms in Arabic.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="question">
+                    <div class="question-icon">4</div>
+                    <span>How many conversations per plan?</span>
+                </div>
+                <div class="answer">
+                    Starter: 300 conversations/month<br>
+                    Professional: 600 conversations/month<br>
+                    Enterprise: 900 conversations/month
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="question">
+                    <div class="question-icon">5</div>
+                    <span>How are products updated?</span>
+                </div>
+                <div class="answer">Automatically from your Salla store! When prices or inventory change, the bot updates within seconds via instant webhooks.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="question">
+                    <div class="question-icon">6</div>
+                    <span>Can I cancel anytime?</span>
+                </div>
+                <div class="answer">Yes, cancel anytime without long-term commitments. No cancellation fees.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="question">
+                    <div class="question-icon">7</div>
+                    <span>What happens to customer data?</span>
+                </div>
+                <div class="answer">Conversations are automatically deleted after the session ends. We don't store personal or payment information. Fully compliant with Saudi data protection law.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="question">
+                    <div class="question-icon">8</div>
+                    <span>How do I get support?</span>
+                </div>
+                <div class="answer">
+                    • Email: customer.service@kemetops.cloud<br>
+                    • Phone: +966 59 342 6181<br>
+                    • Hours: Sunday-Thursday, 9 AM - 6 PM (Riyadh Time)
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="question">
+                    <div class="question-icon">9</div>
+                    <span>What makes you different from other chatbots?</span>
+                </div>
+                <div class="answer">
+                    • Specialized for PC parts (understands compatibility, specs, use cases)<br>
+                    • Natural Saudi dialect<br>
+                    • Direct Salla integration (generates cart links)<br>
+                    • Latest AI technology (Claude Sonnet 4.5)
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="question">
+                    <div class="question-icon">10</div>
+                    <span>What happens if I exceed monthly conversations?</span>
+                </div>
+                <div class="answer">Additional conversations are charged at 0.60 SAR each. You can also upgrade to a higher plan anytime.</div>
+            </div>
+        </div>
+        
+        <!-- Contact Box -->
+        <div class="contact-box">
+            <h3>لم تجد إجابة لسؤالك؟</h3>
+            <p>تواصل معنا وسنساعدك خلال 24 ساعة</p>
+            <a href="mailto:customer.service@kemetops.cloud">📧 customer.service@kemetops.cloud</a>
         </div>
     </div>
-
-    <div class="faq-item">
-        <div class="question">س5: هل يعمل على الواتساب؟</div>
-        <div class="answer">نعم، في باقة المحترف وباقة المؤسسات. الباقة الأساسية تشمل ويدجت الموقع فقط.</div>
-    </div>
-
-    <div class="faq-item">
-        <div class="question">س6: كيف يتم تحديث المنتجات؟</div>
-        <div class="answer">تلقائياً من متجر سلة! عند تحديث سعر أو مخزون، يتحدث الروبوت خلال ثوانٍ عبر webhooks فورية.</div>
-    </div>
-
-    <div class="faq-item">
-        <div class="question">س7: هل يمكنني إلغاء الاشتراك؟</div>
-        <div class="answer">نعم، في أي وقت بدون التزامات طويلة الأجل. لا توجد رسوم إلغاء.</div>
-    </div>
-
-    <div class="faq-item">
-        <div class="question">س8: ماذا يحدث لبيانات العملاء؟</div>
-        <div class="answer">المحادثات تُحذف تلقائياً بعد 24 ساعة. لا نخزن معلومات شخصية أو معلومات دفع. امتثال كامل لقانون حماية البيانات السعودي.</div>
-    </div>
-
-    <div class="faq-item">
-        <div class="question">س9: هل التطبيق آمن؟</div>
-        <div class="answer">نعم! نستخدم OAuth 2.0 للتوثيق، HTTPS للتشفير، ومراجعات أمنية منتظمة. معتمد من سلة.</div>
-    </div>
-
-    <div class="faq-item">
-        <div class="question">س10: كيف أحصل على دعم فني؟</div>
-        <div class="answer">
-            • البريد الإلكتروني: support@kemetops.cloud<br>
-            • الشات المباشر على الموقع<br>
-            • الهاتف (باقة المؤسسات): متاح من الأحد للخميس، 9 صباحاً - 6 مساءً
-        </div>
-    </div>
-
-    <div class="faq-item">
-        <div class="question">س11: هل يدعم متاجر متعددة؟</div>
-        <div class="answer">حالياً، كل اشتراك لمتجر واحد. للمتاجر المتعددة، اتصل بنا لخصم خاص.</div>
-    </div>
-
-    <div class="faq-item">
-        <div class="question">س12: ما الفرق بينكم وبين الشات بوتات الأخرى؟</div>
-        <div class="answer">
-            • مصمم خصيصاً لقطع الكمبيوتر (يفهم التوافق، التقنيات، الاستخدامات)<br>
-            • يتحدث اللهجة السعودية بشكل طبيعي<br>
-            • تكامل مباشر مع سلة (توليد روابط سلة مباشرة)<br>
-            • أحدث تقنية AI (Claude Sonnet 4)
-        </div>
-    </div>
-
-    <div class="faq-item">
-        <div class="question">س13: هل يمكن تخصيص الرسائل؟</div>
-        <div class="answer">نعم! يمكنك تخصيص رسالة الترحيب، أسلوب الرد، والرسائل التلقائية من لوحة التحكم.</div>
-    </div>
-
-    <div class="faq-item">
-        <div class="question">س14: هل توجد رسوم إعداد؟</div>
-        <div class="answer">لا! لا توجد رسوم إعداد أو رسوم خفية. فقط الاشتراك الشهري.</div>
-    </div>
-
-    <div class="faq-item">
-        <div class="question">س15: هل يمكنني تجربة التطبيق مجاناً؟</div>
-        <div class="answer">نعم! نوفر تجربة مجانية لمدة 14 يوم لجميع الباقات. لا يلزم بطاقة ائتمانية.</div>
-    </div>
-
-    <hr style="margin: 60px 0;">
-
-    <h1 style="text-align: center;">Frequently Asked Questions - English</h1>
-
-    <div class="faq-item">
-        <div class="question">Q1: What is Tajmi3a?</div>
-        <div class="answer">Tajmi3a is an AI-powered chatbot designed specifically for PC parts stores on Salla platform. It helps customers choose the right components and generates direct cart links.</div>
-    </div>
-
-    <div class="faq-item">
-        <div class="question">Q2: How long does installation take?</div>
-        <div class="answer">Only 15 minutes! One-click install from Salla App Store. No technical expertise required.</div>
-    </div>
-
-    <div class="faq-item">
-        <div class="question">Q3: Does it support Arabic?</div>
-        <div class="answer">Yes, fully! The bot speaks natural Saudi dialect and understands technical terms in Arabic.</div>
-    </div>
-
-    <div class="faq-item">
-        <div class="question">Q4: How many conversations per plan?</div>
-        <div class="answer">Starter: 1,000/month | Professional: 5,000/month | Enterprise: Unlimited</div>
-    </div>
-
-    <div class="faq-item">
-        <div class="question">Q5: How do I get support?</div>
-        <div class="answer">Email: customer.service@kemetops.cloud | Live chat | Phone (Enterprise plan)</div>
-    </div>
-
-    <p style="text-align: center; margin-top: 60px; color: #666;">
-        لمزيد من الأسئلة، تواصل معنا: <a href="mailto:customer.service@kemetops.cloud">customer.service@kemetops.cloud</a>
-    </p>
-
+    
+    <!-- Footer -->
+    <footer>
+        <p><strong>تجميعة</strong> - مساعد الذكاء الاصطناعي لبناء الكمبيوتر</p>
+        <p>مقدم من KemetOps</p>
+        <p style="margin-top: 10px;">© 2025 KemetOps. جميع الحقوق محفوظة.</p>
+    </footer>
+    
+    <script>
+        function showSection(lang) {
+            const arabicSection = document.getElementById('arabic-section');
+            const englishSection = document.getElementById('english-section');
+            const langButtons = document.querySelectorAll('.lang-btn');
+            
+            if (lang === 'arabic') {
+                arabicSection.style.display = 'block';
+                englishSection.style.display = 'none';
+                langButtons[0].classList.add('active');
+                langButtons[1].classList.remove('active');
+            } else {
+                arabicSection.style.display = 'none';
+                englishSection.style.display = 'block';
+                langButtons[0].classList.remove('active');
+                langButtons[1].classList.add('active');
+            }
+        }
+    </script>
 </body>
 </html>
